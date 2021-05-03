@@ -1,0 +1,130 @@
+<script>
+  /***************///
+  function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+  };
+  var isAnAdult = readCookie('isAnAdultChecked');
+  var isAdult = sessionStorage.getItem("isAdult");
+  if (isAnAdult || isAdult) {
+    document.write("<style> #prompt-background { display: none; } body { overflow: auto !important; }</style>");
+  };
+</script>
+
+{% assign enter_date_of_birth = true %}
+
+{% assign age = 21 %}
+
+{% capture adult_header %}
+Important please read & confirm <br> 
+{% endcapture %}
+
+{% capture adult_text %}
+
+This site is intended for adult consumers.
+You must be at least 19 to enter this site (except 18 in Alberta and 21 in Quebec). 
+Access by minors is restricted by law and subject to fines and penalties.
+
+{% endcapture %}
+
+<div id="prompt-background">
+  <div class = "prompt-wrapper">
+    <div id="age-check-prompt" class="modal-prompt">
+      <center>
+        <h2>{{ adult_header }}</h2>
+        <p>{{ adult_text }}</p>
+      </center>
+      
+      <div id = "showError" class="alert alert-danger row_m" style = "display: none; ">
+       
+        <p>Please fill-in the form below before entering the website.</p>
+	  </div>
+      <div{% unless enter_date_of_birth %} style="display:none;"{% endunless %}>
+        {% include 'country_list' %}
+
+        {% if enter_date_of_birth %}
+        <div style="clear:both; margin-bottom:10px"></div>
+        <div class="row_m">
+          
+          <label for="state">Your date of birth</label>
+            <input class="form-control inputmaskDate" id = "byear" name="" type="date" inputmode="date">
+        </div>
+        {% endif %}
+
+        <div style="clear:both; margin-bottom:15px"></div>
+      </div>
+      <div class = "row_m">
+        <input type="checkbox" id="rememberMe" name="remember_me" value="Remember Me">
+        <label for="rememberMe"> &nbsp;  Remember me for 30 days. I confirm that this is not a shared device. </label>
+         
+        <center>
+          <br/>
+        	<button id="submit_birthdate" class="button-enter btn styled-submit" onclick="ageCheck()" style="display:inline-block">Enter</button> 
+            &nbsp; &nbsp; &nbsp; 
+          	<button class="button-enter btn styled-submit" style="display:inline-block" onclick = "window.location.href='http://google.com/';"
+                  id="button-exit" name="button-exit">EXIT</button>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+ 
+ function ageCheck() {
+    var DateDiff = {
+      inYears: function(d1, d2) {
+        return d2.getFullYear()-d1.getFullYear();
+      }
+    } 
+   //function start 
+   var state_selected =   document.getElementById('state').value;
+   var min_age = $("#state option:selected").attr("data-limit");  // Set the minimum age. 
+   var allow_access =  $("#state option:selected").attr("data-access"); 
+   var date =   parseInt(document.getElementById('byear').value);
+   var input = document.getElementById( 'byear' ).value;
+   var d = new Date( input );
+   var year,month,day,do_action;
+   if (!!d.valueOf()) {
+     document.getElementById('showError').style.display = "none";
+     do_action = true; 
+     year = d.getFullYear();
+     month = d.getMonth()+1;
+     day = d.getDate();
+   }else{
+      do_action = false; 
+  	  $("#showError").text("Please fill-in the form below before entering the website.").css("display","block");
+   }
+   var today = new Date();
+   var theirDate = new Date((year), month, day);
+   var age_user = DateDiff.inYears(theirDate,today);
+   //console.log(min_age,state_selected,age_user,today.getFullYear(),theirDate.getFullYear());
+   if(do_action != false ){
+     if (age_user < min_age ) {
+       $("#showError").text("Sorry, you can not access the website due to legal age restrictions.").css("display","block");
+     } else {
+       if(allow_access == 1){
+         if (document.getElementById('rememberMe').checked){
+           var dayss = 30; 
+           var new_date = new Date();
+           new_date.setTime(new_date.getTime()+(dayss*24*60*60*1000));
+           var expires = "; expires="+new_date.toGMTString();
+           document.cookie = 'isAnAdultChecked=true;'+expires+"; path=/";   
+         }
+        sessionStorage.setItem("isAdult", "Yes");
+       }
+        location.reload(); 
+   }
+   
+ }
+ }
+  
+  
+</script>
+

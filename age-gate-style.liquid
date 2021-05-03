@@ -1,0 +1,59 @@
+<style>
+  .alert-danger {
+  	background: #EBEBEB; padding: 10px 20px; 
+    border-left: 3px #FC9418 solid; margin-bottom: 15px;
+  } 
+
+  .modal-prompt {
+    margin: 0px auto; width: 100%; max-width: 600px; min-height: 90vh;
+    margin: 0 auto; background-color: #FFF;  box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    border-style: solid; border-width: 1px 1px 1px 1px; border-color: #fff; 
+    transition: background 0.3s,border 0.3s,border-radius 0.3s,box-shadow 0.3s;
+    position: relative;z-index: 1000000; padding: 40px; 
+  }
+  
+  .modal-prompt p, .modal-prompt h2 {
+    line-height: 32px; max-width: 96%; margin-left: auto; margin-right: auto;  
+  }
+  
+  .modal-prompt h2 {
+    color: #fec524;
+    font-family: "Friz Quadrata",Sans-serif; font-size: 25px;
+    font-weight: 700;line-height: 1.3em;
+  }
+  
+  #prompt-background {
+    width: 100vw; height: calc(100vh + 200px);
+    position: fixed; left: 0;     overflow: hidden;
+    top: 0;z-index: 9999999;padding: 40px; padding-top: 60px; 
+    background-color: rgba(0, 0, 0, 0.7)!important
+  }
+  #prompt-background:after{
+  content: ""; position: absolute; width: 200%;
+  height: 200%; top: -50%; left: -50%; z-index: -1;
+  background: #000;/*url('https://cdn.shopify.com/s/files/1/0549/3604/3718/files/HoneyStick_canadaLogo.png?v=1614368694') 0 0 repeat;*/
+  background-size: 180px auto; transform: rotate(-45deg);
+  }
+  #rememberMe { vertical-align: middle;  }
+  #rememberMe + label  { vertical-align: middle; display: inline;  }
+  .modal-prompt select {     
+    -webkit-appearance: button !important; display: block; width: 100%; 
+  }
+  
+  .modal-prompt .row_m {
+  	width: 100%;  max-width: 96%; margin-left: auto; margin-right: auto;  
+  }
+  #submit_birthdate , #button-exit  { 
+  	font-family: "sofia-pro",Sans-serif; font-size: 16px; letter-spacing: 1px; 
+    fill: #FFF; color: #FFF; background-color: #000; border-style: solid; 
+    border-width: 1px 1px 1px 1px; border-color: #000; 
+    border-radius: 0 0 0 0; padding: 10px 20px; min-height: 41px; 
+  }
+  @media only screen and (max-width: 500px){
+  	.modal-prompt p, .modal-prompt h2 {
+        line-height: 24px; max-width: 98%; margin-left: auto; margin-right: auto;  
+    }
+    .modal-prompt { padding: 20px 10px; }
+    #prompt-background { padding: 25px 20px; height: calc(100vh); }
+  }
+</style>
